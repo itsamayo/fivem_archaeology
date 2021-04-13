@@ -2,6 +2,8 @@
 ## Description
 An archeology activity for players. Using a specific tool, players can dig for rare items. Only certain grounds can be dug up. Item rarity is effected by the type of ground (Currently configured to accept most natural ground types)
 
+Can be used out of the box on any server
+
 ## Configuration
 * Set min and max task times
 * Configure/Add/Remove items that are to be found + their rarity
