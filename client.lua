@@ -33,7 +33,7 @@ function StartDigging()
             -- Check if the ground is compatibile before digging
             local diggable, message, location, _, ground = getDiggingLocation()                        
             if diggable then
-                notification('You start digging')
+                Notification('You start digging')
                 table.insert(oldLocations, location)                
                 local begin = GetGameTimer()
                 local finish = math.random(Config.DigTimeMin, Config.DigTimeMax)        
@@ -53,17 +53,17 @@ function StartDigging()
                     end
                     if reward ~= 'nothing' then
                         GivePlayerFossil(reward.item)                   
-                        notification('You found a ' .. reward.label)            
+                        Notification('You found a ' .. reward.label)            
                     else
-                        notification('You found nothing')    
+                        Notification('You found nothing')    
                     end                    
                 end
                 inScenario = false
             else -- If it's not compatible ground then notify the player
-                notification(message)
+                Notification(message)
             end  
         else
-            notification('You need a ' .. Config.RequiredTool.label)
+            Notification('You need a ' .. Config.RequiredTool.label)
         end              
     end)
 end
@@ -85,7 +85,7 @@ function RunScenario(name)
 end
 
 -- Check ground level
-function checkLevel(surfaceNormal)
+function CheckLevel(surfaceNormal)
     local x = math.abs(surfaceNormal.x)
     local y = math.abs(surfaceNormal.y)
     local z = math.abs(surfaceNormal.z)
@@ -123,7 +123,7 @@ function getDiggingLocation()
                 end                    
             end    
             -- Check to see ground angle    
-            if checkLevel(surfaceNormal) then                  
+            if CheckLevel(surfaceNormal) then                  
                 return true,'OK', hitLocation, surfaceNormal, material            
             else                
                 return false, 'Too steep to dig', hitLocation, surfaceNormal, material
@@ -137,7 +137,7 @@ function getDiggingLocation()
 end
 
 -- Send notification
-function notification(msg)
+function Notification(msg)
     if Config.UseCustomNotification then
         -- Custom notification here
     else
