@@ -11,7 +11,7 @@ An archeology activity for players. Using a specific tool, players can dig for r
 ## Notes
 * You can set up the `np-archeology:givePlayerFossil` server event in `server.lua` to work with your backend should you want to
 * If you do decide to set `Config.UseDBItems` to true in `config.lua` then make sure all items in `Config.RareItems` exist in your DB
-* If you do decide to set `Config.RequiresTools` to true in `config.lua` then make the `Config.RequiredTool.item` exists in your DB
+* If you do decide to set `Config.RequiresTools` to true in `config.lua` then make sure the `Config.RequiredTool.item` exists in your DB
 
 ## Updates for later maybe
 * A selling point for items - not included due to shops/selling/buying etc usually covered by an existing framework
