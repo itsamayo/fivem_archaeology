@@ -12,34 +12,34 @@ Config = {
         [2] = { value = 30, item = 'pricelessjewel', label = "priceless jewel" },
         [3] = { value = 50, item = 'mythicfossil', label = "mythic fossil" },
         [4] = { value = 80, item = 'rarefossil', label = "rare fossil" },        
-        [5] = { value = 120, item = 'oldnecklace', label = "old necklace" },
+        [5] = { value = 120, item = 'necklace', label = "necklace" },
         [6] = { value = 150, item = 'skull', label = "skull" },
-        [7] = { value = 180, item = 'oldbracelet', label = "old bracelet" }
+        [7] = { value = 180, item = 'bracelet', label = "bracelet" }
     },
     MaxGroundAngle = 0.6, -- Ground angle before it becomes undiggable (honestly just to avoid exploiting odd places)
     Ground = {
         -- Define ground hashes where digging can take place     
         -- Floating point values define 2nd value in RNG for reward, lower values increases the odds   
-        [2409420175] = 1000,
-        [3833216577] = 1000,
-        [1333033863] = 1000,
-        [4170197704] = 1000,
-        [1109728704] = 1000,
-        [2352068586] = 1000,
-        [581794674] = 1000,
-        [-461750719] = 1000,
-        [-1286696947] = 1000,
-        [3008270349] = 850,
-        [223086562] = 850,
-        [3594309083] = 850,
-        [2461440131] = 850,
-        [1144315879] = 850,
-        [2128369009] = 850        
+        [2409420175] = 1000, -- grass
+        [3833216577] = 1000, -- grass
+        [1333033863] = 1000, -- grass
+        [4170197704] = 1000, -- grass
+        [1109728704] = 1000, -- grass
+        [2352068586] = 1000, -- grass
+        [581794674] = 1000, -- grass
+        [-461750719] = 1000, -- grass
+        [-1286696947] = 1000, -- grass
+        [3008270349] = 850, -- sand
+        [223086562] = 850, -- sand
+        [3594309083] = 850, -- sand
+        [2461440131] = 850, -- sand
+        [1144315879] = 850, -- sand
+        [2128369009] = 850 -- sand    
     },
 
     -- Plug n play configuration
-    UseCustomNotification = false, -- Only enable if you plan on having the notifications use something other than chat
-    UseDBItems = false, -- Only enable if you plan on having items be added to DB i.e for selling as part of the "job"
-    RequiresTools = false, -- Only enable if you plan on forcing players to have an item on hand
+    UseCustomNotification = false, -- Enable if you plan on having the notifications use something other than native
+    UseDBItems = false, -- Enable if you plan on having items be added to DB i.e for selling as part of the "job"
+    RequiresTools = false, -- Enable if you plan on forcing players to have an item on hand
     RequiredTool = { item = 'trowel', label = 'Trowel' } -- An item that should exist in your DB if RequiresTools is set to true
 }

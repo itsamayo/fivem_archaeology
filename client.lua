@@ -4,10 +4,24 @@
 
 local inScenario = false
 local ableToDig = false
-local oldLocations = {}
+local oldLocations = {} -- This could (maybe should) be moved to a server sided
 
+-- Dig via command
 RegisterCommand("dig", function()
-	Citizen.CreateThread(function()
+    StartDigging()
+end, false)
+
+-- Net event if you want to call it from a usable item
+RegisterNetEvent('archeology:dig')
+AddEventHandler('archeology:dig', function()
+	StartDigging()
+end)
+
+-- UTILITY METHODS
+
+-- Main dig method
+function StartDigging()
+    Citizen.CreateThread(function()
         -- Check if the player has the required tools if necessary        
         if Config.RequiresTools then
             -- Handle your custom item checking here
@@ -19,6 +33,7 @@ RegisterCommand("dig", function()
             -- Check if the ground is compatibile before digging
             local diggable, message, location, _, ground = getDiggingLocation()                        
             if diggable then
+                notification('You start digging')
                 table.insert(oldLocations, location)                
                 local begin = GetGameTimer()
                 local finish = math.random(Config.DigTimeMin, Config.DigTimeMax)        
@@ -38,7 +53,7 @@ RegisterCommand("dig", function()
                     end
                     if reward ~= 'nothing' then
                         GivePlayerFossil(reward.item)                   
-                        notification('You found 1x ' .. reward.label)            
+                        notification('You found a ' .. reward.label)            
                     else
                         notification('You found nothing')    
                     end                    
@@ -49,25 +64,8 @@ RegisterCommand("dig", function()
             end  
         else
             notification('You need a ' .. Config.RequiredTool.label)
-        end
-              
+        end              
     end)
-end, false)
-
--- UTILITY METHODS
-
--- Send notification
-function notification(msg)
-    if Config.UseCustomNotification then
-        -- Custom notification
-    else
-        -- Chat notification
-        local fal = 'Archeology'        
-        TriggerEvent('chat:addMessage', {
-            template = '<div style="padding: 8px; margin: 8px; background-color: rgba(25, 214, 220, 0.9); border-radius: 25px;">{0} : {1}</div>',
-            args = { fal, msg }
-        })
-    end
 end
 
 -- Reward the player
@@ -103,15 +101,16 @@ end
 -- Check ground compatibility 
 function getDiggingLocation()    
     local ped = PlayerPedId()
-    local playerCoord = GetEntityCoords(ped)
-    local target = GetOffsetFromEntityInWorldCoords(ped, vector3(0,2,-3)) -- Tried and tested vector
-    local testRay = StartShapeTestRay(playerCoord, target, 17, ped, 7) -- This values 17 and 7 are kind of just tried and tested to work nicely
-    local _, hit, hitLocation, surfaceNormal, material, _ = GetShapeTestResultEx(testRay)    
 
     -- Obviously no digging in cars
     if IsPedInAnyVehicle(ped) then
         return false, 'Unable to dig inside vehicle'
     end
+
+    local playerCoord = GetEntityCoords(ped)
+    local target = GetOffsetFromEntityInWorldCoords(ped, vector3(0,2,-3)) -- Tried and tested vector
+    local testRay = StartShapeTestRay(playerCoord, target, 17, ped, 7) -- This values 17 and 7 are kind of just tried and tested to work nicely
+    local _, hit, hitLocation, surfaceNormal, material, _ = GetShapeTestResultEx(testRay)    
     
     -- Initial check, if hit is 0 just escape
     if hit == 1 then 
@@ -122,7 +121,8 @@ function getDiggingLocation()
                 if distanceToOld <= Config.MinDistanceBetweenSites then
                     return false, 'You already dug here, try somewhere else', hitLocation, surfaceNormal, material
                 end                    
-            end        
+            end    
+            -- Check to see ground angle    
             if checkLevel(surfaceNormal) then                  
                 return true,'OK', hitLocation, surfaceNormal, material            
             else                
@@ -134,4 +134,16 @@ function getDiggingLocation()
     else        
         return false, 'Too steep to dig', hitLocation, surfaceNormal, material
     end    
+end
+
+-- Send notification
+function notification(msg)
+    if Config.UseCustomNotification then
+        -- Custom notification here
+    else
+        -- Native notification        
+        SetNotificationTextEntry("STRING")
+        AddTextComponentString(msg)
+        DrawNotification(false, false)
+    end
 end

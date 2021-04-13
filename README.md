@@ -7,6 +7,7 @@ An archeology activity for players. Using a specific tool, players can dig for r
 * Configure/Add/Remove items that are to be found + their rarity
 * Configure/Add/Remove the diggable ground hashes + their respective impact on rarity
 * Configure the distance between each spot that gets dug up by a player (player only current session only, not shared server side)
+* Switch between native notifications and your own custom notifications using `Config.UseCustomNotification`
 
 ## Notes
 * You can set up the `np-archeology:givePlayerFossil` server event in `server.lua` to work with your backend should you want to
