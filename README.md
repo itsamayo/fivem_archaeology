@@ -8,7 +8,7 @@ Can be used out of the box on any server
 * Set min and max task times
 * Configure/Add/Remove items that are to be found + their rarity
 * Configure/Add/Remove the diggable ground hashes + their respective impact on rarity
-* Configure the distance between each spot that gets dug up by a player (player only current session only, not shared server side)
+* Configure the distance between each spot that gets dug up by a player (player session only, not shared server side)
 * Switch between native notifications and your own custom notifications using `Config.UseCustomNotification`
 
 ## Notes
