@@ -1,6 +1,6 @@
-# FiveM - Archeology (no framework)
+# FiveM - Archaeology (no framework)
 ## Description
-An archeology activity for players. Using a specific tool, players can dig for rare items. Only certain grounds can be dug up. Item rarity is effected by the type of ground (Currently configured to accept most natural ground types)
+An archaeology activity for players. Using a specific tool, players can dig for rare items. Only certain grounds can be dug up. Item rarity is effected by the type of ground (Currently configured to accept most natural ground types)
 
 Can be used out of the box on any server
 
