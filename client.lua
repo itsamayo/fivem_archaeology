@@ -31,12 +31,12 @@ function StartDigging()
         end
         if ableToDig then
             -- Check if the ground is compatibile before digging
-            local diggable, message, location, _, ground = getDiggingLocation()                        
+            local diggable, message, location, _, ground = GetDiggingLocation()                     
             if diggable then
                 Notification('You start digging')
                 table.insert(oldLocations, location)                
                 local begin = GetGameTimer()
-                local finish = math.random(Config.DigTimeMin, Config.DigTimeMax)        
+                local finish = math.random(Config.DigTimeMin, Config.DigTimeMax) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                              
                 RunScenario(Config.Scenario)
                 while GetGameTimer() <= begin + finish do
                     Citizen.Wait(0)
@@ -99,7 +99,7 @@ function CheckLevel(surfaceNormal)
 end
 
 -- Check ground compatibility 
-function getDiggingLocation()    
+function GetDiggingLocation()    
     local ped = PlayerPedId()
 
     -- Obviously no digging in cars
