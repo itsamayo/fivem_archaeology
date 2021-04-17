@@ -22,57 +22,68 @@ end)
 -- Main dig method
 function StartDigging()
     Citizen.CreateThread(function()
+        local playerServerId = GetPlayerServerId(PlayerId())
         -- Check if the player has the required tools if necessary        
-        if Config.RequiresTools then
-            -- Handle your custom item checking here
-            -- Check for Config.RequiredTool.item
+        if Config.UseNoPixelExports then            
+            local hasItem = exports["np-activities"]:hasInventoryItem(playerServerId, Config.RequiredTool.item)
+            if hasItem then
+                ableToDig = true
+            else 
+                ableToDig = false
+            end           
         else
             ableToDig = true
         end
         if ableToDig then
-            -- Check if the ground is compatibile before digging
-            local diggable, message, location, _, ground = GetDiggingLocation()                     
-            if diggable then
-                Notification('You start digging')
-                table.insert(oldLocations, location)                
-                local begin = GetGameTimer()
-                local finish = math.random(Config.DigTimeMin, Config.DigTimeMax) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                              
-                RunScenario(Config.Scenario)
-                while GetGameTimer() <= begin + finish do
-                    Citizen.Wait(0)
-                end
-                if inScenario then
-                    ClearPedTasks(PlayerPedId())
-                    local val = math.random(1, Config.Ground[ground]) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                            
-                    local reward = 'nothing'                                
-                    for i=1, #Config.RareItems, 1 do                          
-                        if val <= Config.RareItems[i].value then
-                            reward = Config.RareItems[i]
-                            break
-                        end
+            local canStart = false
+            if Config.UseNoPixelExports then
+                canStart = exports["np-activities"]:canDoActivity('activity_archaeology', playerServerId)
+            else
+                canStart = true
+            end                    
+            if canStart then
+                -- Check if the ground is compatibile before digging
+                local diggable, message, location, _, ground = GetDiggingLocation()                     
+                if diggable then                    
+                    exports["np-activities"]:activityInProgress('activity_archaeology', playerServerId)
+                    Notification(playerServerId, 'You start digging')                    
+                    table.insert(oldLocations, location)                
+                    local begin = GetGameTimer()
+                    local finish = math.random(Config.DigTimeMin, Config.DigTimeMax) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                              
+                    RunScenario(Config.Scenario)
+                    while GetGameTimer() <= begin + finish do
+                        Citizen.Wait(0)
                     end
-                    if reward ~= 'nothing' then
-                        GivePlayerFossil(reward.item)                   
-                        Notification('You found a ' .. reward.label)            
-                    else
-                        Notification('You found nothing')    
-                    end                    
-                end
-                inScenario = false
-            else -- If it's not compatible ground then notify the player
-                Notification(message)
-            end  
+                    if inScenario then
+                        ClearPedTasks(PlayerPedId())
+                        local val = math.random(1, Config.Ground[ground]) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                            
+                        local reward = 'nothing'                                
+                        for i=1, #Config.RareItems, 1 do                          
+                            if val <= Config.RareItems[i].value then
+                                reward = Config.RareItems[i]
+                                break
+                            end
+                        end
+                        if reward ~= 'nothing' then
+                            exports["np-activities"]:giveInventoryItem(playerServerId, reward.item, 1)
+                            Notification(playerServerId, 'You found a ' .. reward.label)            
+                        else
+                            Notification(playerServerId, 'You found nothing')    
+                        end                    
+                    end
+                    exports["np-activities"]:activityCompleted('activity_archaeology', playerServerId, true) -- not sure if 4th param is required for success?
+                    inScenario = false
+                else -- If it's not compatible ground then notify the player
+                    Notification(playerServerId, message)
+                end  
+            else
+                -- debugging
+                -- print('np-activities returned false')
+            end            
         else
-            Notification('You need a ' .. Config.RequiredTool.label)
+            Notification(playerServerId, 'You need a ' .. Config.RequiredTool.label)
         end              
     end)
-end
-
--- Reward the player
-function GivePlayerFossil(reward)
-    if Config.UseDBItems then
-        TriggerServerEvent('np-archeology:givePlayerFossil', reward)
-    end
 end
 
 -- Scenario player
@@ -137,9 +148,10 @@ function GetDiggingLocation()
 end
 
 -- Send notification
-function Notification(msg)
-    if Config.UseCustomNotification then
-        -- Custom notification here
+function Notification(playerServerId, msg)
+    if Config.UseNoPixelExports then
+        -- NP notification
+        exports["np-activities"]:notifyPlayer(playerServerId, msg)
     else
         -- Native notification        
         SetNotificationTextEntry("STRING")

@@ -36,10 +36,8 @@ Config = {
         [1144315879] = 850, -- sand
         [2128369009] = 850 -- sand    
     },
+    RequiredTool = { item = 'trowel', label = 'Trowel' }, -- Needs to exist in DB
 
-    -- Plug n play configuration
-    UseCustomNotification = false, -- Enable if you plan on having the notifications use something other than native
-    UseDBItems = false, -- Enable if you plan on having items be added to DB i.e for selling as part of the "job"
-    RequiresTools = false, -- Enable if you plan on forcing players to have an item on hand
-    RequiredTool = { item = 'trowel', label = 'Trowel' } -- An item that should exist in your DB if RequiresTools is set to true
+    -- NoPixel exports
+    UseNoPixelExports = false -- Only enable if using NoPixel exports    
 }
