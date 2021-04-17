@@ -12,9 +12,7 @@ Can be used out of the box on any server
 * Switch between native notifications and your own custom notifications using `Config.UseCustomNotification` and the `Notification()` method in `client.lua` 
 
 ## Notes
-* You can set up the `np-archeology:givePlayerFossil` server event in `server.lua` to work with your backend should you want to
-* If you do decide to set `Config.UseDBItems` to true in `config.lua` then make sure all items in `Config.RareItems` exist in your DB
-* If you do decide to set `Config.RequiresTools` to true in `config.lua` then make sure the `Config.RequiredTool.item` exists in your DB
+* Set UseNoPixelExports if using NoPixel exports
 
 ## Updates for later maybe
 * A selling point for items - not included due to shops/selling/buying etc usually covered by an existing framework
