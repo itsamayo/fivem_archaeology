@@ -39,5 +39,5 @@ Config = {
     RequiredTool = { item = 'trowel', label = 'Trowel' }, -- Needs to exist in DB
 
     -- NoPixel exports
-    UseNoPixelExports = false -- Only enable if using NoPixel exports    
+    UseNoPixelExports = true -- Only enable if using NoPixel exports    
 }
