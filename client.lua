@@ -12,8 +12,8 @@ RegisterCommand("dig", function()
 end, false)
 
 -- Net event if you want to call it from a usable item
-RegisterNetEvent('archeology:dig')
-AddEventHandler('archeology:dig', function()
+RegisterNetEvent('activity_archaeology:dig')
+AddEventHandler('activity_archaeology:dig', function()
 	StartDigging()
 end)
 
