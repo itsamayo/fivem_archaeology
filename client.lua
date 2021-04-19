@@ -44,14 +44,17 @@ function StartDigging()
             if canStart then
                 -- Check if the ground is compatibile before digging
                 local diggable, message, location, _, ground = GetDiggingLocation()                     
-                if diggable then                    
-                    exports["np-activities"]:activityInProgress('activity_archaeology', playerServerId)
+                if diggable then                                        
                     Notification(playerServerId, 'You start digging')                    
                     table.insert(oldLocations, location)                
-                    local begin = GetGameTimer()
-                    local finish = math.random(Config.DigTimeMin, Config.DigTimeMax) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                              
+                    local timeToStart = GetGameTimer()
+                    local timeToComplete = Config.DigTimeMax
+                    if Config.RandomTime then
+                        timeToComplete = math.random(Config.DigTimeMin, Config.DigTimeMax) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                              
+                    end                    
+                    exports["np-activities"]:activityInProgress('activity_archaeology', playerServerId, timeToComplete)
                     RunScenario(Config.Scenario)
-                    while GetGameTimer() <= begin + finish do
+                    while GetGameTimer() <= timeToStart + timeToComplete do
                         Citizen.Wait(0)
                     end
                     if inScenario then

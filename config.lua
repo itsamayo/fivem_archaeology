@@ -3,6 +3,7 @@ Config = {
     Scenario = 'WORLD_HUMAN_GARDENER_PLANT',
     DigTimeMin = 10000, -- How long should it take at least to dig something up? 1000 = 1 second
     DigTimeMax = 20000, -- How long should it take at most to dig something up? 1000 = 1 second
+    RandomTime = true, -- Set to true for random dig time between DigTimeMin and DigTimeMax, if false DigTimeMax will be used
     MinDistanceBetweenSites = 2.5, -- Distance between each dig site (player only, not shared) - 1.0 = 1 vector unit
     RareItems = {
         -- Must be arranged in asc order 
